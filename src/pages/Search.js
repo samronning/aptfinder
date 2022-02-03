@@ -5,8 +5,8 @@ import Grid from "@mui/material/Grid";
 const Search = () => {
   return (
     <Grid container justifyContent="center">
-      <MainSearchBar item />
-      <NyAnimator item />
+      <MainSearchBar />
+      <NyAnimator />
     </Grid>
   );
 };
