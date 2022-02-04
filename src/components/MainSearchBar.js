@@ -5,27 +5,38 @@ import citiesAPI from "../services/citiesAPI";
 import throttle from "lodash/throttle";
 
 const handleChangeSearch = (newValue, setSearch) => {
-  setSearch(newValue);
+  setSearch(newValue ?? "");
+};
+
+const handleSelect = (newValue, onLocationParsed) => {
+  if (!newValue) return;
+  const lower = newValue.toLowerCase();
+  const removedCommas = lower.replaceAll(",", "");
+  const replacedSpaces = removedCommas.replaceAll(" ", "-");
+  onLocationParsed(replacedSpaces);
 };
 
 const fetch = throttle((search, callback) => {
   citiesAPI.top_5_cities(search).then((res) => callback(res));
 }, 300);
 
-const MainSearchBar = () => {
+const MainSearchBar = (props) => {
+  const { onLocationParsed } = props;
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
 
   useEffect(() => {
     fetch(search, setResults);
   }, [search]);
-  console.log(results);
 
   return (
     <Autocomplete
       options={results?.map(({ city, state_id }) => `${city}, ${state_id}`)}
       inputValue={search}
-      onChange={(e, newValue) => handleChangeSearch(newValue, setSearch)}
+      onChange={(e, newValue) => {
+        handleChangeSearch(newValue, setSearch);
+        handleSelect(newValue, onLocationParsed);
+      }}
       onInputChange={(e, newValue) => handleChangeSearch(newValue, setSearch)}
       filterOptions={(x) => x}
       renderInput={(params) => (
