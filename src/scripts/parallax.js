@@ -3,7 +3,7 @@ const parallax = (x) => {
     document.getElementById(id)
   );
   const scale = 3;
-  const parascale = 1.1;
+  const parascale = 1.01;
   layers.forEach((layer, i) =>
     layer.setAttribute(
       "transform",

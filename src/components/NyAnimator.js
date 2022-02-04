@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { ReactComponent as NycSvg } from "../assets/inkscapes/nyc_fixed_opt.svg";
-import "../scripts/mouseMoveListener";
 
 const NyAnimator = () => {
   const [cname, setCname] = useState();

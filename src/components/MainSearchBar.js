@@ -8,11 +8,12 @@ const handleChangeSearch = (newValue, setSearch) => {
   setSearch(newValue ?? "");
 };
 
-const handleSelect = (newValue, onLocationParsed) => {
+const handleSelect = (newValue, onLocationParsed, parallaxME) => {
   if (!newValue) return;
   const lower = newValue.toLowerCase();
   const removedCommas = lower.replaceAll(",", "");
   const replacedSpaces = removedCommas.replaceAll(" ", "-");
+  parallaxME.stop();
   onLocationParsed(replacedSpaces);
 };
 
@@ -21,7 +22,7 @@ const fetch = throttle((search, callback) => {
 }, 300);
 
 const MainSearchBar = (props) => {
-  const { onLocationParsed } = props;
+  const { onLocationParsed, parallaxME } = props;
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
 
@@ -35,7 +36,7 @@ const MainSearchBar = (props) => {
       inputValue={search}
       onChange={(e, newValue) => {
         handleChangeSearch(newValue, setSearch);
-        handleSelect(newValue, onLocationParsed);
+        handleSelect(newValue, onLocationParsed, parallaxME);
       }}
       onInputChange={(e, newValue) => handleChangeSearch(newValue, setSearch)}
       filterOptions={(x) => x}
