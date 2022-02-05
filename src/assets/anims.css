@@ -2,9 +2,7 @@ html {
   background-color: black;
   overflow: hidden;
 }
-.skyline {
-  transition: transform 0.2s;
-}
+
 #l1,
 #l2,
 #l3,

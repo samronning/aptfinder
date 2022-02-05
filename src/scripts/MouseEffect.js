@@ -26,7 +26,7 @@ export class MouseEffect {
   };
   update = (event) => {
     this.mouse.updatePosition(event);
-    this.effect(this.mouse.x);
+    this.effect(this.mouse.x, this.mouse.y);
   };
   onMouseMoveHandler = (event) => {
     if (this.isTimeToUpdate()) {
@@ -50,6 +50,9 @@ export class MouseEffect {
   }
   stop() {
     this.container.onmousemove = null;
+  }
+  manual(x, y, opts) {
+    this.effect(x, y, opts);
   }
 }
 export default MouseEffect;

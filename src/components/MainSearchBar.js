@@ -9,11 +9,18 @@ const handleChangeSearch = (newValue, setSearch) => {
 };
 
 const handleSelect = (newValue, onLocationParsed, parallaxME) => {
-  if (!newValue) return;
+  const cityShiftDist = 280000;
+  const cityShiftOpts = { smooth: 1 };
+  if (!newValue) {
+    parallaxME.manual(0, 0, cityShiftOpts);
+    setTimeout(() => parallaxME.start(), cityShiftOpts.smooth * 1000);
+    return;
+  }
   const lower = newValue.toLowerCase();
   const removedCommas = lower.replaceAll(",", "");
   const replacedSpaces = removedCommas.replaceAll(" ", "-");
   parallaxME.stop();
+  parallaxME.manual(-cityShiftDist, 0, cityShiftOpts);
   onLocationParsed(replacedSpaces);
 };
 
