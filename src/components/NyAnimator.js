@@ -8,7 +8,7 @@ const NyAnimator = () => {
     setTimeout(() => setCname("spin-right"), 8000);
   }, []);
 
-  return <NycSvg className={cname} style={{ width: "100%" }} />;
+  return <NycSvg className={cname} style={{ width: "100%", marginTop: 200 }} />;
 };
 
 export default NyAnimator;
