@@ -40,10 +40,7 @@ export class MouseEffect {
     // Track the mouse position relative to the center of the container.
     this.mouse.setOrigin(this.container);
 
-    setTimeout(
-      () => (this.container.onmousemove = this.onMouseMoveHandler),
-      6000
-    );
+    this.container.onmousemove = this.onMouseMoveHandler;
   }
   start() {
     this.container.onmousemove = this.onMouseMoveHandler;

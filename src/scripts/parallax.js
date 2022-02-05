@@ -1,5 +1,5 @@
 const parallax = (x, y, opts = { smooth: 0.2 }) => {
-  const layers = ["layer1", "layer2", "layer3", "layer4", "layer5"].map((id) =>
+  const layers = ["l1", "l2", "l3", "l4", "l5"].map((id) =>
     document.getElementById(id)
   );
   const scale = 3;
