@@ -9,21 +9,15 @@ const handleChangeSearch = (newValue, setSearch) => {
   setSearch(newValue ?? "");
 };
 
-const handleSelect = (newValue, onLocationParsed, parallaxME, setSelected) => {
-  const cityShiftDist = 280000;
-  const cityShiftOpts = { smooth: 1 };
+const handleSelect = (newValue, onLocationParsed, setSelected) => {
   if (!newValue) {
     setSelected(false);
-    parallaxME.manual(0, 0, cityShiftOpts);
-    setTimeout(() => parallaxME.start(), cityShiftOpts.smooth * 1000);
     return;
   }
   setSelected(true);
   const lower = newValue.toLowerCase();
   const removedCommas = lower.replaceAll(",", "");
   const replacedSpaces = removedCommas.replaceAll(" ", "-");
-  parallaxME.stop();
-  parallaxME.manual(-cityShiftDist, 0, cityShiftOpts);
   onLocationParsed(replacedSpaces);
 };
 
@@ -34,7 +28,7 @@ const fetch = throttle((search, callback) => {
 const AnimatedAutocomplete = animated(Autocomplete);
 
 const MainSearchBar = (props) => {
-  const { onLocationParsed, parallaxME } = props;
+  const { onLocationParsed } = props;
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
   const [selected, setSelected] = useState(false);
@@ -57,7 +51,7 @@ const MainSearchBar = (props) => {
       onChange={(e, newValue, reason) => {
         if (reason === "clear" || !newValue) setOpen(false);
         handleChangeSearch(newValue, setSearch);
-        handleSelect(newValue, onLocationParsed, parallaxME, setSelected);
+        handleSelect(newValue, onLocationParsed, setSelected);
       }}
       onInputChange={(e, newValue) => handleChangeSearch(newValue, setSearch)}
       filterOptions={(x) => x}

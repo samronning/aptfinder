@@ -1,16 +1,7 @@
-const parallax = (x, y, opts = { smooth: 0.2 }) => {
-  const layers = ["l1", "l2", "l3", "l4", "l5"].map((id) =>
-    document.getElementById(id)
-  );
+const parallax = (num, i) => {
   const scale = 3;
   const parascale = 1.01;
-  layers.forEach((layer, i) => {
-    layer.style.transition = `transform ${opts.smooth}s`;
-    layer.setAttribute(
-      "transform",
-      `translate(${(x * scale) / 1000 / (parascale * i + 1)} 0)`
-    );
-  });
+  return (num * scale) / 1000 / (parascale / (i + 1));
 };
 
 export default parallax;
