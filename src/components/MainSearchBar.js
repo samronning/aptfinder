@@ -12,6 +12,7 @@ const handleChangeSearch = (newValue, setSearch) => {
 const handleSelect = (newValue, onLocationParsed, setSelected) => {
   if (!newValue) {
     setSelected(false);
+    onLocationParsed("");
     return;
   }
   setSelected(true);

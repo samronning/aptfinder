@@ -7,6 +7,9 @@ const NyAnimator = ({ followMouse }) => {
   const [x, setX] = useState(0);
   useEffect(() => {
     if (followMouse) setX(position.xmid);
+    else {
+      setX(0);
+    }
   }, [followMouse, position.xmid]);
   return (
     <>
@@ -16,7 +19,7 @@ const NyAnimator = ({ followMouse }) => {
         version="1.1"
         viewBox="0 0 131.33 131.33"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ width: "100%", marginTop: 200 }}
+        style={{ width: "100%", position: "fixed", top: 250 }}
       >
         {<Skylines x={x} />}
       </svg>
