@@ -36,7 +36,6 @@ const pathProps = [
 ];
 
 const Skylines = ({ x }) => {
-  console.log(x);
   return pathProps.map((pProps, i) => (
     <Skyline key={i} {...pProps} xTrans={parallax(x, i)} />
   ));
