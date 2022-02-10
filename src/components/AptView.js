@@ -19,7 +19,7 @@ const AptView = (props) => {
               setApts([]);
               setLoaded(false);
             }
-          }, 8000);
+          }, 0);
         })
         .catch(() => setLoaded(false))
         .finally(() => setLoading(false));
