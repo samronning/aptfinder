@@ -1,12 +1,9 @@
-import axios from "axios";
 import { pyClient } from "./pyServer";
 
-axios.create();
-
 const aptsAPI = {
-  scrape_list: (location) =>
+  scrape_list: (location, signal) =>
     pyClient
-      .get("/apartments/list", { params: { location, page: 1 } })
+      .get("/apartments/list", { params: { location, page: 1 }, signal })
       .then((res) => res.data),
 };
 export default aptsAPI;

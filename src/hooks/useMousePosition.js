@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { throttle } from "lodash";
 
-const useMousePosition = () => {
+const useMousePosition = (use) => {
   const [position, setPosition] = useState({
     x: 0,
     y: 0,
@@ -10,6 +10,7 @@ const useMousePosition = () => {
   });
 
   useEffect(() => {
+    if (!use) return;
     const setFromEvent = throttle(
       (e) =>
         setPosition({
@@ -25,7 +26,7 @@ const useMousePosition = () => {
     return () => {
       window.removeEventListener("mousemove", setFromEvent);
     };
-  }, []);
+  }, [use]);
 
   return position;
 };

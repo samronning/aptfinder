@@ -15,30 +15,30 @@ const handleSelect = (newValue, onLocationParsed, setSelected) => {
     onLocationParsed("");
     return;
   }
-  setSelected(true);
   const lower = newValue.toLowerCase();
   const removedCommas = lower.replaceAll(",", "");
   const replacedSpaces = removedCommas.replaceAll(" ", "-");
   onLocationParsed(replacedSpaces);
+  setSelected(true);
 };
 
 const fetch = throttle((search, callback) => {
-  citiesAPI.top_5_cities(search).then((res) => callback(res));
+  return citiesAPI.top_5_cities(search).then((res) => callback(res));
 }, 300);
 
 const AnimatedAutocomplete = animated(Autocomplete);
 
 const MainSearchBar = (props) => {
-  const { onLocationParsed } = props;
+  const { onLocationParsed, abortLoad, loaded, setLoaded } = props;
   const [search, setSearch] = useState("");
-  const [results, setResults] = useState([]);
   const [selected, setSelected] = useState(false);
+  const [results, setResults] = useState([]);
   const [open, setOpen] = useState(false);
-  const spring = useSpring({ top: !selected ? 100 : 20 });
+  const spring = useSpring({ top: selected ? 20 : 100 });
 
   useEffect(() => {
     fetch(search, setResults);
-  }, [search]);
+  }, [search, selected]);
 
   return (
     <AnimatedAutocomplete
@@ -50,7 +50,13 @@ const MainSearchBar = (props) => {
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
       onChange={(e, newValue, reason) => {
-        if (reason === "clear" || !newValue) setOpen(false);
+        if (reason === "clear" || !newValue) {
+          setOpen(false);
+          if (!loaded) abortLoad();
+          else {
+            setLoaded(false);
+          }
+        }
         handleChangeSearch(newValue, setSearch);
         handleSelect(newValue, onLocationParsed, setSelected);
       }}

@@ -1,10 +1,57 @@
 import { animated } from "react-spring";
 import { useSpring } from "react-spring";
+import useMousePosition from "../hooks/useMousePosition";
 import parallax from "../scripts/parallax";
 
-const Skyline = ({ d, fill, xTrans }) => {
-  const spring = useSpring({ x: xTrans, config: { duration: 200 } });
-  return <animated.path d={d} fill={fill} style={spring} />;
+const Skyline = ({ d, fill, xTrans, loading, followMouse, loaded }) => {
+  const springParallax = useSpring({ x: xTrans, config: { duration: 200 } });
+  const [springLoad, springLoadApi] = useSpring(() => ({
+    from: { y: 23, rotateZ: 0, transform: "scale(1)" },
+  }));
+  if (loaded) {
+    if (springLoad.rotateZ.get() === 0) {
+    }
+    springLoadApi.start({
+      to: async (next, cancel) => {
+        await next({ opacity: 0 });
+        await cancel();
+      },
+    });
+  } else {
+    springLoadApi.start({ opacity: 1 });
+  }
+
+  if (!followMouse && loading) {
+    springLoadApi.start({
+      to: async (next) => {
+        await next({ y: -25, transform: "scale(0.3)" });
+        await next({
+          rotateZ: 360,
+          loop: true,
+          config: { tension: 50 },
+        });
+      },
+    });
+  } else if (followMouse && !loading) {
+    springLoadApi.start({
+      to: async (next) => {
+        await next({
+          rotateZ: 0,
+          loop: false,
+          immediate: true,
+        });
+        await next({ y: 23, transform: "scale(1)" });
+      },
+    });
+  }
+
+  return (
+    <animated.path
+      d={d}
+      fill={fill}
+      style={{ transformOrigin: "center", ...springParallax, ...springLoad }}
+    />
+  );
 };
 
 const pathProps = [
@@ -35,9 +82,18 @@ const pathProps = [
   },
 ];
 
-const Skylines = ({ x }) => {
+const Skylines = ({ followMouse, loading, loaded }) => {
+  const position = useMousePosition(followMouse);
+  const x = followMouse ? position.xmid : 0;
   return pathProps.map((pProps, i) => (
-    <Skyline key={i} {...pProps} xTrans={parallax(x, i)} />
+    <Skyline
+      key={i}
+      {...pProps}
+      xTrans={parallax(x, i)}
+      loading={loading ? i + 1 : 0}
+      loaded={loaded}
+      followMouse={followMouse}
+    />
   ));
 };
 export default Skylines;
