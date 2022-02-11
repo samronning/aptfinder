@@ -44,16 +44,19 @@ const Search = () => {
   }, [location, setLoading, setLoaded, searchController.signal]);
 
   return (
-    <Grid container justifyContent="center">
-      <MainSearchBar
-        onLocationParsed={setLocation}
-        abortLoad={() => searchController.abort()}
-        loaded={loaded}
-        setLoaded={setLoaded}
-      />
-      <AptView apts={apts} />
+    <>
+      <Grid container direction="column" alignItems="center">
+        <MainSearchBar
+          onLocationParsed={setLocation}
+          abortLoad={() => searchController.abort()}
+          onClear={() => setApts([])}
+          loaded={loaded}
+          setLoaded={setLoaded}
+        />
+        <AptView apts={apts} />
+      </Grid>
       <NyAnimator followMouse={!location} loading={loading} loaded={loaded} />
-    </Grid>
+    </>
   );
 };
 

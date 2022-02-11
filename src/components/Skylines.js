@@ -6,7 +6,7 @@ import parallax from "../scripts/parallax";
 const Skyline = ({ d, fill, xTrans, loading, followMouse, loaded }) => {
   const springParallax = useSpring({ x: xTrans, config: { duration: 200 } });
   const [springLoad, springLoadApi] = useSpring(() => ({
-    from: { y: 23, rotateZ: 0, transform: "scale(1)" },
+    from: { y: 8, rotateZ: 0, transform: "scale(1)" },
   }));
   if (loaded) {
     if (springLoad.rotateZ.get() === 0) {
@@ -40,7 +40,7 @@ const Skyline = ({ d, fill, xTrans, loading, followMouse, loaded }) => {
           loop: false,
           immediate: true,
         });
-        await next({ y: 23, transform: "scale(1)" });
+        await next({ y: 8, transform: "scale(1)" });
       },
     });
   }

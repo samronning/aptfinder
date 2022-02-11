@@ -11,6 +11,7 @@ const NyAnimator = ({ followMouse, loading, loaded }) => {
       style={{
         width: "100%",
         position: "fixed",
+        bottom: -633,
         overflow: "overlay",
         pointerEvents: "none",
       }}

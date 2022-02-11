@@ -29,12 +29,14 @@ const fetch = throttle((search, callback) => {
 const AnimatedAutocomplete = animated(Autocomplete);
 
 const MainSearchBar = (props) => {
-  const { onLocationParsed, abortLoad, loaded, setLoaded } = props;
+  const { onLocationParsed, abortLoad, loaded, setLoaded, onClear } = props;
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState(false);
   const [results, setResults] = useState([]);
   const [open, setOpen] = useState(false);
-  const spring = useSpring({ top: selected ? 20 : 100 });
+  const spring = useSpring({
+    marginTop: selected ? 20 : 100,
+  });
 
   useEffect(() => {
     fetch(search, setResults);
@@ -44,14 +46,14 @@ const MainSearchBar = (props) => {
     <AnimatedAutocomplete
       options={results?.map(({ city, state_id }) => `${city}, ${state_id}`)}
       inputValue={search}
-      style={spring}
+      style={{ ...spring }}
       open={open}
-      sx={{ position: "fixed" }}
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
       onChange={(e, newValue, reason) => {
         if (reason === "clear" || !newValue) {
           setOpen(false);
+          onClear();
           if (!loaded) abortLoad();
           else {
             setLoaded(false);
