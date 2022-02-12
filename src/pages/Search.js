@@ -3,7 +3,7 @@ import NyAnimator from "../components/NyAnimator";
 import MainSearchBar from "../components/MainSearchBar";
 import AptView from "../components/AptView";
 import aptsAPI from "../services/aptsAPI";
-import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
 
 const Search = () => {
   const [apts, setApts] = useState([]);
@@ -11,13 +11,15 @@ const Search = () => {
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
-  const searchController = useMemo(() => location && new AbortController(), [
-    location,
-  ]);
+  const searchController = useMemo(
+    () => location && new AbortController(),
+    [location]
+  );
 
-  useEffect(() => () => searchController && searchController.abort(), [
-    searchController,
-  ]);
+  useEffect(
+    () => () => searchController && searchController.abort(),
+    [searchController]
+  );
 
   useEffect(() => {
     if (location) {
@@ -45,7 +47,7 @@ const Search = () => {
 
   return (
     <>
-      <Grid container direction="column" alignItems="center">
+      <Stack alignItems="center">
         <MainSearchBar
           onLocationParsed={setLocation}
           abortLoad={() => searchController.abort()}
@@ -54,7 +56,7 @@ const Search = () => {
           setLoaded={setLoaded}
         />
         <AptView apts={apts} />
-      </Grid>
+      </Stack>
       <NyAnimator followMouse={!location} loading={loading} loaded={loaded} />
     </>
   );
