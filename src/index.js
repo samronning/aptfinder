@@ -17,7 +17,7 @@ render(
   <StrictMode>
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
+        <CssBaseline enableColorScheme />
         <Routes>
           <Route path="/" element={<Search />} />
         </Routes>
