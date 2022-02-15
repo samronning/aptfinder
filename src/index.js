@@ -1,11 +1,12 @@
 import { StrictMode } from "react";
 import { render } from "react-dom";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./assets/themes/dark";
-import Search from "./pages/Search";
+import App from "./App";
+
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -18,9 +19,7 @@ render(
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <CssBaseline enableColorScheme />
-        <Routes>
-          <Route path="/" element={<Search />} />
-        </Routes>
+        <App />
       </ThemeProvider>
     </BrowserRouter>
   </StrictMode>,

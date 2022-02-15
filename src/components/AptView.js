@@ -10,7 +10,6 @@ import { animated, useTransition, useSpring } from "react-spring";
 
 const AptView = (props) => {
   const { apts } = props;
-  console.log(apts);
 
   const transitions = useTransition(apts, {
     from: { opacity: 0, transform: "scale(0)" },
@@ -20,25 +19,11 @@ const AptView = (props) => {
     trail: 50,
   });
 
-  const scrollBar = useSpring({
-    from: { opacity: 0 },
-    opacity: apts.length ? 1 : 0,
-    delay: apts.length ? 1000 : 0,
-    immediate: !apts.length,
-  });
-
   const AnimatedCard = animated(Card);
-  const AnimatedGrid = animated(Grid);
 
   return (
     <Container>
-      <AnimatedGrid
-        container
-        justifyContent="center"
-        spacing={2}
-        style={scrollBar}
-        sx={{ my: 3, maxHeight: "80vh", overflow: "auto" }}
-      >
+      <Grid container justifyContent="center" spacing={2}>
         {transitions((props, apt) => (
           <Grid item>
             <AnimatedCard style={props}>
@@ -50,7 +35,7 @@ const AptView = (props) => {
             </AnimatedCard>
           </Grid>
         ))}
-      </AnimatedGrid>
+      </Grid>
     </Container>
   );
 };

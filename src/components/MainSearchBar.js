@@ -3,23 +3,20 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import citiesAPI from "../services/citiesAPI";
 import throttle from "lodash/throttle";
-import { useSpring, animated } from "react-spring";
+import { useTransition, animated } from "react-spring";
+import { useNavigate } from "react-router-dom";
 
 const handleChangeSearch = (newValue, setSearch) => {
   setSearch(newValue ?? "");
 };
 
-const handleSelect = (newValue, onLocationParsed, setSelected) => {
-  if (!newValue) {
-    setSelected(false);
-    onLocationParsed("");
-    return;
-  }
+const handleSelect = (newValue, onSelect, navigate, setSelected) => {
   const lower = newValue.toLowerCase();
   const removedCommas = lower.replaceAll(",", "");
   const replacedSpaces = removedCommas.replaceAll(" ", "-");
-  onLocationParsed(replacedSpaces);
+  onSelect();
   setSelected(true);
+  setTimeout(() => navigate(`/list/${replacedSpaces}`), 1000);
 };
 
 const fetch = throttle((search, callback) => {
@@ -28,52 +25,57 @@ const fetch = throttle((search, callback) => {
 
 const AnimatedAutocomplete = animated(Autocomplete);
 
-const MainSearchBar = (props) => {
-  const { onLocationParsed, abortLoad, loaded, setLoaded, onClear } = props;
+const MainSearchBar = ({ onSelect }) => {
   const [search, setSearch] = useState("");
-  const [selected, setSelected] = useState(false);
   const [results, setResults] = useState([]);
   const [open, setOpen] = useState(false);
-  const spring = useSpring({
-    marginTop: selected ? 20 : 100,
+  const [selected, setSelected] = useState(false);
+  const transitions = useTransition(selected, {
+    from: { top: -100, opacity: 0 },
+    enter: { top: 100, opacity: 1 },
+    leave: { top: -100, opacity: 0 },
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(search, setResults);
-  }, [search, selected]);
+  }, [search]);
 
-  return (
-    <AnimatedAutocomplete
-      options={results?.map(({ city, state_id }) => `${city}, ${state_id}`)}
-      inputValue={search}
-      style={{ ...spring }}
-      open={open}
-      onOpen={() => setOpen(true)}
-      onClose={() => setOpen(false)}
-      onChange={(e, newValue, reason) => {
-        if (reason === "clear" || !newValue) {
-          setOpen(false);
-          onClear();
-          if (!loaded) abortLoad();
-          else {
-            setLoaded(false);
+  return transitions(
+    (styles, selected) =>
+      !selected && (
+        <AnimatedAutocomplete
+          options={results?.map(({ city, state_id }) => `${city}, ${state_id}`)}
+          inputValue={search}
+          style={{
+            width: 300,
+            position: "fixed",
+            left: "50%",
+            marginLeft: -150,
+            ...styles,
+          }}
+          open={open}
+          disableClearable
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
+          onChange={(e, newValue, reason) => {
+            handleSelect(newValue, onSelect, navigate, setSelected);
+          }}
+          onInputChange={(e, newValue) =>
+            handleChangeSearch(newValue, setSearch)
           }
-        }
-        handleChangeSearch(newValue, setSearch);
-        handleSelect(newValue, onLocationParsed, setSelected);
-      }}
-      onInputChange={(e, newValue) => handleChangeSearch(newValue, setSearch)}
-      filterOptions={(x) => x}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Location"
-          sx={{ minWidth: 300 }}
-          color="primary"
-          variant="outlined"
+          filterOptions={(x) => x}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Location"
+              sx={{ minWidth: 300 }}
+              color="primary"
+              variant="outlined"
+            />
+          )}
         />
-      )}
-    />
+      )
   );
 };
 
