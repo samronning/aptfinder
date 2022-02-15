@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import NyAnimator from "./NyAnimator";
 const Loader = ({ active, nullVal, setResource, resourceGetter }) => {
-  console.log(active);
   useEffect(() => {
     resourceGetter()
       .then((res) => {
@@ -10,7 +9,7 @@ const Loader = ({ active, nullVal, setResource, resourceGetter }) => {
       .catch(() => {
         setResource(nullVal);
       });
-  }, []);
+  }, [setResource, resourceGetter]);
   return active && <NyAnimator loader={true} />;
 };
 

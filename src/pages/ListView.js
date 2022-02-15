@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Stack from "@mui/material/Stack";
 import Appbar from "@mui/material/AppBar";
 import Paginator from "../components/Paginator";
@@ -9,14 +9,19 @@ import { useParams } from "react-router-dom";
 import aptsAPI from "../services/aptsAPI";
 import Loader from "../components/Loader";
 
+const nullVal = [];
+
 const ListView = () => {
   const params = useParams();
   const [apts, setApts] = useState([]);
-  const resourceGetter = () => aptsAPI.scrape_list(params.location);
+  const resourceGetter = useCallback(
+    () => aptsAPI.scrape_list(params.location),
+    [params.location]
+  );
   return (
     <>
       <Loader
-        nullVal={[]}
+        nullValGetter={nullVal}
         resourceGetter={resourceGetter}
         setResource={setApts}
         active={apts.length === 0}
