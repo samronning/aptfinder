@@ -1,9 +1,8 @@
 import { useState, useCallback } from "react";
 import Stack from "@mui/material/Stack";
 import Appbar from "@mui/material/AppBar";
-import Paginator from "../components/Paginator";
-import Sorter from "../components/Sorter";
-import Filterer from "../components/Filterer";
+import Toolbar from "@mui/material/Toolbar";
+import Filter from "../components/Filter/Filter";
 import AptView from "../components/AptView";
 import { useParams } from "react-router-dom";
 import aptsAPI from "../services/aptsAPI";
@@ -27,12 +26,12 @@ const ListView = () => {
         active={apts.length === 0}
       />
       <Stack alignItems="center">
-        <Appbar>
-          <Paginator />
-          <Sorter />
-          <Filterer />
+        <Appbar position="fixed">
+          <Toolbar sx={{ justifyContent: "center" }}>
+            <Filter />
+          </Toolbar>
         </Appbar>
-        <AptView apts={apts} />
+        <AptView apts={apts} sx={{ mt: 10 }} />
       </Stack>
     </>
   );

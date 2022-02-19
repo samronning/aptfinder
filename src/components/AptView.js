@@ -10,7 +10,7 @@ import Grid from "@mui/material/Grid";
 import { animated, useTransition, useSpring } from "react-spring";
 
 const AptView = (props) => {
-  const { apts } = props;
+  const { apts, sx } = props;
 
   const transitions = useTransition(apts, {
     from: { opacity: 0 },
@@ -23,7 +23,7 @@ const AptView = (props) => {
   const AnimatedCard = animated(Card);
 
   return (
-    <Container>
+    <Container sx={sx}>
       <Grid container justifyContent="center" spacing={3}>
         {transitions((props, apt, t) => (
           <Grid item sx={{ width: 300, height: 320 }}>
