@@ -25,14 +25,16 @@ const ListView = () => {
         setResource={setApts}
         active={apts.length === 0}
       />
-      <Stack alignItems="center">
-        <Appbar position="fixed">
-          <Toolbar sx={{ justifyContent: "center" }}>
-            <Filter />
-          </Toolbar>
-        </Appbar>
-        <AptView apts={apts} sx={{ mt: 10 }} />
-      </Stack>
+      {apts.length ? (
+        <Stack alignItems="center">
+          <Appbar position="fixed">
+            <Toolbar sx={{ justifyContent: "center" }}>
+              <Filter />
+            </Toolbar>
+          </Appbar>
+          <AptView apts={apts} sx={{ mt: 10 }} />
+        </Stack>
+      ) : null}
     </>
   );
 };
