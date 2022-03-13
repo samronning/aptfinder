@@ -32,7 +32,9 @@ const AptView = (props) => {
                 sx={{ height: 100 }}
                 title={<T variant="h5">{apt.title}</T>}
                 subheader={
-                  <T variant="subtitle1">{`${apt.pricing} / ${apt.beds}`}</T>
+                  <T variant="subtitle1">{`$${apt.price_min.toLocaleString()} - ${apt.price_max.toLocaleString()} / ${
+                    apt.bed_min
+                  } - ${apt.bed_max} Beds`}</T>
                 }
               />
               <CardMedia
