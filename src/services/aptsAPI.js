@@ -1,9 +1,9 @@
 import { pyClient } from "./pyServer";
 
 const aptsAPI = {
-  scrape_list: (location, signal) =>
+  scrape_list: (location, page, signal) =>
     pyClient
-      .get("/apartments/list", { params: { location, page: 1 }, signal })
+      .get("/apartments/list", { params: { location, page }, signal })
       .then((res) => res.data),
 };
 export default aptsAPI;

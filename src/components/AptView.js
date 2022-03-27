@@ -10,7 +10,7 @@ import Grid from "@mui/material/Grid";
 import { animated, useTransition, useSpring } from "react-spring";
 
 const AptView = (props) => {
-  const { apts, sx } = props;
+  const { apts, sx, lastApartmentElementRef } = props;
 
   const transitions = useTransition(apts, {
     from: { opacity: 0 },
@@ -25,27 +25,34 @@ const AptView = (props) => {
   return (
     <Container sx={sx}>
       <Grid container justifyContent="center" spacing={3}>
-        {transitions((props, apt, t) => (
-          <Grid item sx={{ width: 300, height: 320 }}>
-            <AnimatedCard style={props}>
-              <CardHeader
-                sx={{ height: 100 }}
-                title={<T variant="h5">{apt.title}</T>}
-                subheader={
-                  <T variant="subtitle1">{`$${apt.price_min.toLocaleString()} - ${apt.price_max.toLocaleString()} / ${
-                    apt.bed_min
-                  } - ${apt.bed_max} Beds`}</T>
-                }
-              />
-              <CardMedia
-                component="img"
-                image={apt.img}
-                height={200}
-                onLoad={() => t.ctrl.resume()}
-              />
-            </AnimatedCard>
-          </Grid>
-        ))}
+        {transitions(
+          (props, apt, t, i) =>
+            apt.price_min !== null && (
+              <Grid
+                item
+                sx={{ width: 300, height: 320 }}
+                ref={i + 1 === apts.length ? lastApartmentElementRef : null}
+              >
+                <AnimatedCard style={props}>
+                  <CardHeader
+                    sx={{ height: 100 }}
+                    title={<T variant="h5">{apt.title}</T>}
+                    subheader={
+                      <T variant="subtitle1">{`$${apt.price_min.toLocaleString()} - ${apt.price_max.toLocaleString()} / ${
+                        apt.bed_min
+                      } - ${apt.bed_max} Beds`}</T>
+                    }
+                  />
+                  <CardMedia
+                    component="img"
+                    image={apt.img}
+                    height={200}
+                    onLoad={() => t.ctrl.resume()}
+                  />
+                </AnimatedCard>
+              </Grid>
+            )
+        )}
       </Grid>
     </Container>
   );
