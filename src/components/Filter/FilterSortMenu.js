@@ -1,18 +1,20 @@
+import { useState } from "react";
 import Popover from "@mui/material/Popover";
 import Grid from "@mui/material/Grid";
 import ArrowUpward from "@mui/icons-material/ArrowUpward";
 import ArrowDownward from "@mui/icons-material/ArrowDownward";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import IconButton from "@mui/material/IconButton";
 
 const FilterMenu = ({
+  id,
   anchorEl,
   onClose,
   InputComponent = () => null,
-  onSortAsc,
-  onSortDesc,
-  onFilterMin,
-  onFilterMax,
+  onSort,
+  onFilter,
 }) => {
+  const [filter, setFilter] = useState({});
   return (
     <Popover
       anchorEl={anchorEl}
@@ -25,14 +27,40 @@ const FilterMenu = ({
     >
       <Grid container sx={{ m: 1 }} direction="column">
         <Grid item>
-          <InputComponent onUpdate={onFilterMin} label="Min" />
+          <InputComponent
+            onUpdate={(e) =>
+              setFilter({ filterBy: id, bound: "min", value: e.target.value })
+            }
+            label="Min"
+          />
         </Grid>
         <Grid item>
-          <InputComponent onUpdate={onFilterMax} label="Max" />
+          <InputComponent
+            onUpdate={(e) =>
+              setFilter({ filterBy: id, bound: "max", value: e.target.value })
+            }
+            label="Max"
+          />
         </Grid>
         <Grid item>
-          <IconButton children={<ArrowUpward />} />
-          <IconButton children={<ArrowDownward />} />
+          <IconButton
+            children={
+              <FilterAltIcon
+                onClick={() =>
+                  onFilter(filter.filterBy, filter.bound, filter.value)
+                }
+              />
+            }
+          />
+        </Grid>
+        <Grid item>
+          <IconButton
+            children={<ArrowUpward />}
+            onClick={() => onSort(id, false)}
+          />
+          <IconButton
+            children={<ArrowDownward onClick={() => onSort(id, true)} />}
+          />
         </Grid>
       </Grid>
     </Popover>

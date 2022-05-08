@@ -1,8 +1,9 @@
 import Dollar from "@mui/icons-material/AttachMoney";
 import TextField from "@mui/material/TextField";
-const PriceInput = ({ label }) => {
+const PriceInput = ({ label, onUpdate }) => {
   return (
     <TextField
+      onChange={onUpdate}
       margin="dense"
       label={label}
       InputProps={{

@@ -18,7 +18,14 @@ const buttonDefs = [
   },
 ];
 
-const Filter = () => {
+const Filter = ({ setSort, setFilter }) => {
+  const handleSort = (id, desc) => {
+    setSort((prev) => ({ ...prev, sortBy: id, desc: desc }));
+  };
+
+  const handleFilter = (id, bound, value) => {
+    setFilter((prev) => ({ ...prev, filterBy: id, [bound]: parseInt(value) }));
+  };
   const [buttonProps, setButtonProps] = useState({});
   return (
     <>
@@ -51,6 +58,8 @@ const Filter = () => {
           onClose={() =>
             setButtonProps((prev) => ({ ...prev, [id]: { anchorEl: null } }))
           }
+          onSort={handleSort}
+          onFilter={handleFilter}
         />
       ))}
     </>
